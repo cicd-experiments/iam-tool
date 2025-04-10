@@ -1,0 +1,35 @@
+services:
+  iam-tool:
+    image: dipdeepcode/keycloak:26.01
+    container_name: keycloak
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Moscow
+      KC_HTTP_PORT: 8080
+      KC_HTTP_ENABLED: true
+      KC_PROXY_HEADERS: xforwarded
+      KC_HOSTNAME_STRICT: false
+    env_file:
+      - .env
+    ports:
+      - "8090:8080"
+    command:
+      - start
+      - --optimized
+    volumes:
+      - iam-tool_vol:/opt/keycloak/data/import
+    networks:
+      - database_net
+      - iam-tool_net
+
+networks:
+  database-net:
+    external: true
+  iam-tool_net:
+    driver: bridge
+    name: iam-tool_net
+
+volumes:
+  iam-tool_vol:
+    driver: local
+    name: iam-tool_vol

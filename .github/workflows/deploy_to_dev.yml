@@ -1,0 +1,43 @@
+name: Deploy iam to the development stand
+on: workflow_dispatch
+permissions: {}
+env:
+  ENV_FILENAME: .env
+  COMPOSE_FILENAME: compose.yml
+jobs:
+  deploy_iam:
+    environment: develop
+    permissions:
+      contents: read
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Create .env file
+        run: |
+          echo "KC_BOOTSTRAP_ADMIN_USERNAME=admin" > ${{ env.ENV_FILENAME }}
+          echo "KC_BOOTSTRAP_ADMIN_PASSWORD=changeme" >> ${{ env.ENV_FILENAME }}
+          echo "KC_DB_URL_HOST=database" >> ${{ env.ENV_FILENAME }}
+          echo "KC_DB_URL_PORT=5432" >> ${{ env.ENV_FILENAME }}
+          echo "KC_DB_URL_DATABASE=keycloak_db" >> ${{ env.ENV_FILENAME }}
+          echo "KC_DB_USERNAME=keycloak_db_user" >> ${{ env.ENV_FILENAME }}
+          echo "KC_DB_PASSWORD=keycloak_db_pass" >> ${{ env.ENV_FILENAME }}
+      - name: Copy files via ssh password
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "${{ env.ENV_FILENAME }},${{ env.COMPOSE_FILENAME }}"
+          target: ${{ vars.PROJECT_DIR }}
+      - name: Compose up
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ vars.PROJECT_DIR }}
+            docker compose --env-file ${{ env.ENV_FILENAME }} up -d

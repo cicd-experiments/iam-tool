@@ -1,7 +1,7 @@
 services:
   iam-tool:
     image: dipdeepcode/keycloak:latest
-    container_name: keycloak
+    container_name: iam-tool
     restart: unless-stopped
     environment:
       TZ: Europe/Moscow

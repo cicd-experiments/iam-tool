@@ -24,8 +24,7 @@ services:
 
 networks:
   database_net:
-    external:
-      name: database_net
+    external: true
   iam-tool_net:
     driver: bridge
     name: iam-tool_net

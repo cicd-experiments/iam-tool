@@ -1,6 +1,6 @@
 services:
   iam-tool:
-    image: dipdeepcode/keycloak:26.01
+    image: dipdeepcode/keycloak:latest
     container_name: keycloak
     restart: unless-stopped
     environment:

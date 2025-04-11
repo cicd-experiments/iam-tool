@@ -5,7 +5,7 @@ env:
   ENV_FILENAME: .env
   COMPOSE_FILENAME: compose.yml
 jobs:
-  build_and_push_iam_image:
+  build_and_push_iam-tool_image:
     environment: develop
     permissions:
       contents: read
@@ -27,9 +27,9 @@ jobs:
           build-args: |
             KEYCLOAK_BASE_IMAGE_TAG=${{ vars.KEYCLOAK_BASE_IMAGE_TAG }}
           push: true
-          tags: '${{ vars.DOCKERHUB_USERNAME }}/${{ vars.KEYCLOAK_IMAGE_TAG }}'
-  deploy_iam:
-    needs: build_and_push_iam_image
+          tags: '${{ vars.DOCKERHUB_USERNAME }}/keycloak:latest'
+  deploy_iam-tool:
+    needs: build_and_push_iam-tool_image
     environment: develop
     permissions:
       contents: read

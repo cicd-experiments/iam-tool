@@ -29,6 +29,7 @@ jobs:
           push: true
           tags: '${{ vars.DOCKERHUB_USERNAME }}/${{ vars.KEYCLOAK_IMAGE_TAG }}'
   deploy_iam:
+    needs: build_and_push_iam_image
     environment: develop
     permissions:
       contents: read

@@ -1,4 +1,4 @@
-name: Deploy iam to the development stand
+name: Deploy iam-tool to the development stand
 on: workflow_dispatch
 permissions: {}
 env:

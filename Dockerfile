@@ -8,6 +8,7 @@ ENV KC_DB=postgres
 WORKDIR /opt/keycloak
 RUN /opt/keycloak/bin/kc.sh build
 
+ARG KEYCLOAK_BASE_IMAGE_TAG
 FROM ${KEYCLOAK_BASE_IMAGE_TAG}
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
 

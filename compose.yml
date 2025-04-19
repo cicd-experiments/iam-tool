@@ -12,7 +12,7 @@ services:
     env_file:
       - .env
     ports:
-      - "8090:8080"
+      - ${APP_PORT}:8080
     command:
       - start
       - --optimized

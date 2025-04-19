@@ -46,6 +46,7 @@ jobs:
           echo "KC_DB_URL_DATABASE=${{ secrets.KC_DB_URL_DATABASE }}" >> ${{ env.ENV_FILENAME }}
           echo "KC_DB_USERNAME=${{ secrets.KC_DB_USERNAME }}" >> ${{ env.ENV_FILENAME }}
           echo "KC_DB_PASSWORD=${{ secrets.KC_DB_PASSWORD }}" >> ${{ env.ENV_FILENAME }}
+          echo "APP_PORT=${{ vars.IAM_TOOL_PORT }}" >> ${{ env.ENV_FILENAME }}
       - name: Copy files via ssh password
         uses: appleboy/scp-action@v0.1.7
         with:
